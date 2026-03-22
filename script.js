@@ -139,10 +139,135 @@ function createBlogListItem(post, index) {
 
   item.append(row, title, meta);
   item.addEventListener('click', () => {
-    window.location.href = `./blogs/${post.file}`;
+    showBlogChoiceDialog(post);
   });
 
   return item;
+}
+
+function showBlogChoiceDialog(post) {
+  const existing = document.getElementById('blogChoiceDialog');
+  if (existing) existing.remove();
+
+  const overlay = document.createElement('div');
+  overlay.className = 'blog-choice-overlay';
+  overlay.id = 'blogChoiceDialog';
+
+  const dialog = document.createElement('div');
+  dialog.className = 'blog-choice-dialog';
+
+  const titleEl = document.createElement('p');
+  titleEl.className = 'blog-choice-title';
+  titleEl.textContent = post.title || post.file;
+
+  const subtitle = document.createElement('p');
+  subtitle.className = 'blog-choice-subtitle';
+  subtitle.textContent = 'How would you like to open this blog?';
+
+  const btnRow = document.createElement('div');
+  btnRow.className = 'blog-choice-btns';
+
+  const navigateBtn = document.createElement('button');
+  navigateBtn.className = 'blog-choice-btn navigate';
+  navigateBtn.textContent = 'Navigate';
+  navigateBtn.addEventListener('click', () => {
+    overlay.remove();
+    window.location.href = `./blogs/${post.file}`;
+  });
+
+  const popupBtn = document.createElement('button');
+  popupBtn.className = 'blog-choice-btn popup';
+  popupBtn.textContent = 'Open Popup';
+  popupBtn.addEventListener('click', () => {
+    overlay.remove();
+    openBlogPopup(post);
+  });
+
+  const cancelBtn = document.createElement('button');
+  cancelBtn.className = 'blog-choice-btn cancel';
+  cancelBtn.textContent = 'Cancel';
+  cancelBtn.addEventListener('click', () => overlay.remove());
+
+  btnRow.append(navigateBtn, popupBtn, cancelBtn);
+  dialog.append(titleEl, subtitle, btnRow);
+  overlay.appendChild(dialog);
+  document.body.appendChild(overlay);
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.remove();
+  });
+}
+
+let popupCount = 0;
+let activePopupDrag = null;
+
+document.addEventListener('mousemove', (e) => {
+  if (!activePopupDrag) return;
+  const { el, ox, oy } = activePopupDrag;
+  const nextLeft = clamp(e.clientX - ox, 8, window.innerWidth - el.offsetWidth - 8);
+  const nextTop = clamp(e.clientY - oy, 68, window.innerHeight - el.offsetHeight - 8);
+  el.style.left = `${nextLeft}px`;
+  el.style.top = `${nextTop}px`;
+});
+
+document.addEventListener('mouseup', () => {
+  activePopupDrag = null;
+});
+
+function openBlogPopup(post) {
+  popupCount += 1;
+  const cascade = ((popupCount - 1) % 6) * 30;
+
+  const popup = document.createElement('div');
+  popup.className = 'blog-popup';
+  popup.style.left = `${clamp(Math.round(window.innerWidth / 2 - 310 + cascade), 8, window.innerWidth - 628)}px`;
+  popup.style.top = `${Math.max(72, 80 + cascade)}px`;
+
+  const head = document.createElement('div');
+  head.className = 'blog-popup-head';
+
+  const controls = document.createElement('div');
+  controls.className = 'term-controls';
+
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'term-dot red terminal-close-dot';
+  closeBtn.setAttribute('aria-label', 'Close popup');
+  closeBtn.addEventListener('mousedown', (e) => e.stopPropagation());
+  closeBtn.addEventListener('click', () => popup.remove());
+
+  const yellowDot = document.createElement('span');
+  yellowDot.className = 'term-dot yellow';
+  const greenDot = document.createElement('span');
+  greenDot.className = 'term-dot green';
+
+  controls.append(closeBtn, yellowDot, greenDot);
+
+  const headTitle = document.createElement('p');
+  headTitle.className = 'terminal-title';
+  headTitle.textContent = post.title || post.file;
+
+  head.append(controls, headTitle);
+
+  head.addEventListener('mousedown', (e) => {
+    if (e.target === closeBtn) return;
+    const rect = popup.getBoundingClientRect();
+    popup.style.left = `${rect.left}px`;
+    popup.style.top = `${rect.top}px`;
+    activePopupDrag = { el: popup, ox: e.clientX - rect.left, oy: e.clientY - rect.top };
+    e.preventDefault();
+  });
+
+  const body = document.createElement('div');
+  body.className = 'blog-popup-body';
+
+  const iframe = document.createElement('iframe');
+  iframe.src = `./blogs/${post.file}`;
+  iframe.className = 'blog-popup-iframe';
+  iframe.setAttribute('title', post.title || post.file);
+
+  body.appendChild(iframe);
+  popup.append(head, body);
+  document.body.appendChild(popup);
 }
 
 async function renderBlogPosts(posts, delayMs) {
