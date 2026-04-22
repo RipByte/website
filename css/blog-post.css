@@ -1,0 +1,152 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #000000;
+  color: #ffffff;
+  font-family: "Press Start 2P", cursive;
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  text-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+header {
+  background-color: #000000;
+  padding: 2rem;
+  border-bottom: 4px solid #ffffff;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+}
+
+header h1 {
+  font-size: 20px;
+  margin-top: 1rem;
+  text-shadow: 2px 2px 0px #ffffff, 0 0 20px rgba(0, 255, 0, 0.5);
+  color: #ffffff;
+}
+
+.back-link {
+  display: inline-block;
+  color: #ffffff;
+  text-decoration: none;
+  border: 2px solid #ffffff;
+  padding: 0.5rem 1rem;
+  font-size: 10px;
+  transition: all 0.2s;
+  background-color: #000000;
+}
+
+.back-link:hover {
+  background-color: #ffffff;
+  color: #000000;
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+}
+
+.meta {
+  font-size: 11px;
+  color: #cccccc;
+  margin-top: 0.5rem;
+}
+
+article.blog-content {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #0a0a0a;
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.3), inset 0 0 10px rgba(0, 255, 0, 0.1);
+  text-align: center;
+}
+
+article.blog-content p {
+  margin-bottom: 1.5rem;
+  text-align: justify;
+  color: #eeeeee;
+  font-size: 11px;
+}
+
+article.blog-content h2 {
+  font-size: 16px;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: #ffffff;
+  text-shadow: 1px 1px 0px rgba(0, 255, 0, 0.5);
+}
+
+article.blog-content ul {
+  list-style: none;
+  margin-bottom: 1.5rem;
+  text-align: left;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+article.blog-content li {
+  margin-bottom: 0.5rem;
+  padding-left: 2rem;
+  color: #eeeeee;
+  font-size: 11px;
+  position: relative;
+}
+
+article.blog-content li::before {
+  content: ">> ";
+  position: absolute;
+  left: 0;
+  color: #ffffff;
+}
+
+article.blog-content strong {
+  color: #ffffff;
+}
+
+article.blog-content img {
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem 0;
+  border: 2px solid #ffffff;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+footer {
+  background-color: #000000;
+  border-top: 4px solid #ffffff;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 14px;
+  }
+
+  article.blog-content {
+    padding: 1rem;
+    margin: 1rem;
+  }
+
+  article.blog-content p,
+  article.blog-content li {
+    font-size: 10px;
+  }
+
+  article.blog-content h2 {
+    font-size: 12px;
+  }
+}

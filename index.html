@@ -1,82 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>R!PDOX</title>
-  <link rel="stylesheet" href="./styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RipByte</title>
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <nav>
+        <a href="#home">Home</a>
+        <a href="/blogs.html">Blog Archive</a>
+        <a href="#threats">Threats</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
 
-<header>
-  <nav class="header-left">
-    <a class="nav-link active" href="./index.html">Home</a>
-  </nav>
-  <h1 class="header-title">R!PDOX</h1>
-  <nav class="header-right">
-    <a class="nav-link" href="./blogs.html">Blogs</a>
-    <button class="spawn-terminal-btn" id="spawnTerminalBtn">Terminal</button>
-  </nav>
-</header>
+    <!-- Blog Section -->
+    <section class="blog-section" id="threats">
+      <h2 class="section-title">RipBytes Info</h2>
+      <div class="blog-grid"></div>
+    </section>
 
-<div class="container">
-  <div class="profile-card">
-    <div class="profile-avatar" aria-label="Profile image flipper">
-      <div class="profile-flip">
-        <img src="https://avatars.githubusercontent.com/u/65809356?v=4" class="profile-face profile-front" alt="Profile front">
-        <img src="https://avatars.githubusercontent.com/u/583231?v=4" class="profile-face profile-back" alt="Profile back">
+    <!-- Skills Section -->
+    <section class="skills-section" id="skills">
+      <h2 class="section-title">Security Skills</h2>
+      <div class="skills-container"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-links">
+        <a href="https://github.com" target="_blank">GitHub</a>
+        <a href="https://twitter.com" target="_blank">Twitter</a>
+        <a href="https://linkedin.com" target="_blank">LinkedIn</a>
+        <a href="mailto:security@example.com">Email</a>
       </div>
-    </div>
-
-    <p class="profile-bio">
-        Security Analyst specializing in automation and development. I perform research and currently working towards security / vulnerablity research.
-    </p>
-
-    <div class="socials">
-      <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="">
-      <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="">
-      <img src="https://cdn-icons-png.flaticon.com/512/733/733558.png" alt="">
-    </div>
-
-    <div class="tags">
-        <span class="tag blue">Security Analyst</span>
-        <span class="tag blue">Python</span>
-        <span class="tag blue">Go Lang</span>
-        <span class="tag blue">OSTH</span>
-        <span class="tag blue">GIAC</span>
-      <!-- <span class="tag red"></span>
-      <span class="tag green">Linux</span> -->
-    </div>
-
-    <!-- <button class="btn">Contact Me</button> -->
-  </div>
-
-  <section class="blog-section" aria-label="Recent blogs terminal">
-    <div class="terminal-head">
-      <div class="term-controls">
-        <button class="term-dot red terminal-close-dot" id="terminalCloseBtn" type="button" aria-label="Close terminal"></button>
-        <span class="term-dot yellow"></span>
-        <span class="term-dot green"></span>
+      <div class="footer-text">
+        &copy; 2026 Cybersecurity Portfolio. Stay Secure.
       </div>
-      <p class="terminal-title">user@portfolio: ~/blogs</p>
-    </div>
+    </footer>
 
-    <div class="terminal-body">
-      <div class="term-line">
-        <span class="prompt">user@portfolio:~$</span>
-        <span class="cmd">ls -lt ./blogs</span>
-      </div>
-      <div class="term-search">
-        <span class="prompt">user@portfolio:~$</span>
-        <input class="term-input" id="blogSearchInput" type="text" placeholder="search *.html   or   search *glass*" />
-        <button class="term-run" id="blogSearchBtn" type="button">run</button>
-      </div>
-      <p class="terminal-note" id="terminalStatus">Loading recent blog entries...</p>
-      <div class="blog-list" id="blogList"></div>
-    </div>
-  </section>
-
-</div>
-<script src="./script.js"></script>
-</body>
+    <script src="./js/script.js"></script>
+  </body>
 </html>

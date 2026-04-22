@@ -1,232 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blogs - R!PDOX</title>
-  <link rel="stylesheet" href="./styles.css">
-  <style>
-    body {
-      height: auto;
-      min-height: 100vh;
-      overflow-y: auto;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog Archive - Cybersecurity</title>
+    <link rel="stylesheet" href="./css/blog-archive.css" />
+  </head>
+  <body>
+    <header>
+      <a href="/" class="back-link">&lt; Back to Home</a>
+      <h1>Blog Archive</h1>
+    </header>
 
-    .blogs-page {
-      position: relative;
-      z-index: 2;
-      padding: 40px 28px 60px;
-    }
+    <div class="search-container">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search blogs by title..."
+        class="search-bar"
+      />
+      <div class="search-info" id="searchInfo"></div>
+    </div>
 
-    .blogs-header {
-      margin-bottom: 32px;
-    }
+    <main class="blog-archive">
+      <div class="blog-list" id="blogList"></div>
+    </main>
 
-    .blogs-header h2 {
-      font-size: 22px;
-      color: #ff6060;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-    }
+    <footer>
+      <a href="/" class="back-link">← Back to Home</a>
+    </footer>
 
-    .blogs-header p {
-      margin-top: 6px;
-      font-size: 13px;
-      color: rgba(200, 210, 225, 0.55);
-    }
-
-    .blogs-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 16px;
-    }
-
-    .blog-card {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 18px 16px 14px;
-      background: rgba(8, 10, 12, 0.58);
-      border: 1px solid rgba(255, 80, 80, 0.18);
-      border-radius: 12px;
-      backdrop-filter: blur(12px) saturate(130%);
-      -webkit-backdrop-filter: blur(12px) saturate(130%);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-      cursor: pointer;
-      text-decoration: none;
-      transition: border-color 0.2s, transform 0.18s, box-shadow 0.2s;
-      min-height: 140px;
-    }
-
-    .blog-card:hover {
-      border-color: rgba(255, 80, 80, 0.45);
-      transform: translateY(-3px);
-      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 80, 80, 0.12);
-    }
-
-    .blog-card-top {
-      flex: 1;
-    }
-
-    .blog-card-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: #f0e8e8;
-      line-height: 1.45;
-      margin-bottom: 6px;
-    }
-
-    .blog-card-date {
-      font-size: 11px;
-      color: rgba(200, 190, 190, 0.5);
-    }
-
-    .blog-card-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-      margin-top: 10px;
-    }
-
-    .blog-card-tag {
-      font-size: 10px;
-      padding: 2px 8px;
-      border-radius: 99px;
-      border: 1px solid;
-      white-space: nowrap;
-    }
-
-    .blogs-empty {
-      grid-column: 1 / -1;
-      text-align: center;
-      color: rgba(200, 190, 190, 0.4);
-      font-size: 14px;
-      padding: 60px 0;
-    }
-
-    /* ── Responsive ── */
-    @media (max-width: 1200px) {
-      .blogs-grid { grid-template-columns: repeat(4, 1fr); }
-    }
-    @media (max-width: 900px) {
-      .blogs-grid { grid-template-columns: repeat(3, 1fr); }
-      .blogs-page { padding: 28px 16px 48px; }
-    }
-    @media (max-width: 600px) {
-      .blogs-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 380px) {
-      .blogs-grid { grid-template-columns: 1fr; }
-    }
-  </style>
-</head>
-<body>
-
-<header>
-  <nav class="header-left">
-    <a class="nav-link" href="./index.html">Home</a>
-  </nav>
-  <h1 class="header-title">R!PDOX</h1>
-  <nav class="header-right">
-    <a class="nav-link active" href="./blogs.html">Blogs</a>
-  </nav>
-</header>
-
-<div class="blogs-page">
-  <div class="blogs-header">
-    <h2>All Posts</h2>
-    <p id="blogsSubtitle">Loading...</p>
-  </div>
-  <div class="blogs-grid" id="blogsGrid">
-    <p class="blogs-empty">Loading posts...</p>
-  </div>
-</div>
-
-<script>
-  const TAG_COLORS = {
-    red:    { bg: 'rgba(255,60,60,0.14)',   border: 'rgba(255,60,60,0.35)',   text: '#ff8080' },
-    blue:   { bg: 'rgba(60,130,255,0.14)',  border: 'rgba(60,130,255,0.35)',  text: '#7ab4ff' },
-    green:  { bg: 'rgba(60,210,100,0.14)',  border: 'rgba(60,210,100,0.35)',  text: '#6fda88' },
-    yellow: { bg: 'rgba(255,210,50,0.14)',  border: 'rgba(255,210,50,0.35)',  text: '#ffd84a' },
-    purple: { bg: 'rgba(160,80,255,0.14)',  border: 'rgba(160,80,255,0.35)',  text: '#c490ff' },
-    orange: { bg: 'rgba(255,140,40,0.14)',  border: 'rgba(255,140,40,0.35)',  text: '#ffaa55' },
-    cyan:   { bg: 'rgba(40,210,220,0.14)',  border: 'rgba(40,210,220,0.35)',  text: '#4dd8e0' },
-    pink:   { bg: 'rgba(255,80,180,0.14)',  border: 'rgba(255,80,180,0.35)',  text: '#ff80cc' },
-  };
-  const TAG_DEFAULT = { bg: 'rgba(255,80,80,0.14)', border: 'rgba(255,80,80,0.30)', text: '#ff9090' };
-
-  function renderTag(tag) {
-    const c = TAG_COLORS[tag.color] || TAG_DEFAULT;
-    const span = document.createElement('span');
-    span.className = 'blog-card-tag';
-    span.textContent = tag.name;
-    span.style.background   = c.bg;
-    span.style.borderColor  = c.border;
-    span.style.color        = c.text;
-    return span;
-  }
-
-  async function loadBlogs() {
-    const grid     = document.getElementById('blogsGrid');
-    const subtitle = document.getElementById('blogsSubtitle');
-
-    let posts = [];
-    try {
-      const res = await fetch('./blogs/index.json');
-      if (!res.ok) throw new Error('fetch failed');
-      const data = await res.json();
-      posts = data.posts || [];
-    } catch (_) {
-      grid.innerHTML = '<p class="blogs-empty">Could not load posts.</p>';
-      subtitle.textContent = '';
-      return;
-    }
-
-    subtitle.textContent = posts.length
-      ? `${posts.length} post${posts.length === 1 ? '' : 's'}`
-      : 'No posts yet.';
-
-    if (!posts.length) {
-      grid.innerHTML = '<p class="blogs-empty">No posts yet — drop a .md file into blogs/ and run node build.js</p>';
-      return;
-    }
-
-    grid.innerHTML = '';
-    for (const post of posts) {
-      const card = document.createElement('a');
-      card.className  = 'blog-card';
-      card.href       = `./blogs/${post.file}`;
-
-      const tags = Array.isArray(post.tags) ? post.tags : [];
-
-      const top = document.createElement('div');
-      top.className = 'blog-card-top';
-      top.innerHTML = `<div class="blog-card-title">${escHtml(post.title)}</div>
-                       <div class="blog-card-date">${escHtml(post.date || '')}</div>`;
-
-      card.appendChild(top);
-
-      if (tags.length) {
-        const tagsDiv = document.createElement('div');
-        tagsDiv.className = 'blog-card-tags';
-        tags.forEach(tag => tagsDiv.appendChild(renderTag(tag)));
-        card.appendChild(tagsDiv);
-      }
-
-      grid.appendChild(card);
-    }
-  }
-
-  function escHtml(s) {
-    return String(s || '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
-
-  loadBlogs();
-</script>
-</body>
+    <script src="./js/blog-search.js"></script>
+  </body>
 </html>
